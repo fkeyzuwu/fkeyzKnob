@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://4axunld1eoys"]
+
+[ext_resource type="Texture2D" uid="uid://cvmnumms0khv1" path="res://addons/fkeyz_knob/sprites/base.png" id="1_d3jd3"]
+[ext_resource type="Script" path="res://addons/fkeyz_knob/knob.gd" id="1_uoort"]
+[ext_resource type="Texture2D" uid="uid://byer1nwtvjpyh" path="res://addons/fkeyz_knob/sprites/dial.png" id="3_57jlc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hjndl"]
+radius = 14.72
+
+[node name="Knob" type="Sprite2D"]
+texture_filter = 1
+scale = Vector2(5, 5)
+texture = ExtResource("1_d3jd3")
+script = ExtResource("1_uoort")
+
+[node name="Dial" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+rotation = -2.35619
+scale = Vector2(1, 1)
+texture = ExtResource("3_57jlc")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
+shape = SubResource("CircleShape2D_hjndl")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
