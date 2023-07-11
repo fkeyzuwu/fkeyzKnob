@@ -11,6 +11,7 @@ class_name Knob extends Control
 ## The rotation degrees the dial will start at.
 @export_range(-180.0, 180.0, 0.1, "degrees") var start_degrees := -130.0:
 	set(value):
+		if not is_inside_tree(): await ready
 		start_degrees = clampf(value, minimum_degrees, maximum_degrees)
 		_dial.rotation_degrees = start_degrees
 ## The minimum rotation degrees the dial can be at.
