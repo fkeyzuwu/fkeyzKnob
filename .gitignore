@@ -1,2 +1,4 @@
 # Godot 4+ specific ignores
 .godot/
+project.godot
+test_scene.tscn
