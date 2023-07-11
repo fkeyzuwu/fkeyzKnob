@@ -27,12 +27,12 @@ offset = Vector2(16, 16)
 unique_name_in_owner = true
 texture_filter = 1
 position = Vector2(80, 80)
+rotation = -2.26893
 scale = Vector2(5, 5)
 texture = ExtResource("3_57jlc")
 offset = Vector2(9.53674e-07, 9.53674e-07)
 
 [node name="Area2D" type="Area2D" parent="."]
-metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 visible = false
