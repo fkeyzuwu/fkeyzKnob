@@ -1,6 +1,8 @@
 ## A simple knob UI node that lets you rotate a knob by dragging it up and down.
 ##
-## Note: Please use the full knob.tscn scene. Using the knob.gd script alone will not work.
+## In order to use this script, please use knob.tscn. Using the knob.gd script alone will not work.[br][br]
+## In case you want to change the knobs' default art, go inside the knob.tscn and change the sprites of the [code]Sprite2D[/code] nodes.
+## You might also need to resize them and scale them differently, and update the main "Knob" [code]Control[/code] nodes' [code]Custom Minimum Size[/code] in order to be able to use it correctly in conjunction with other UI elements in your scene.
 class_name Knob extends Control
 
 
