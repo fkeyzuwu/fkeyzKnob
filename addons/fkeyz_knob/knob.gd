@@ -15,9 +15,15 @@ class_name Knob extends Control
 		start_degrees = clampf(value, minimum_degrees, maximum_degrees)
 		_dial.rotation_degrees = start_degrees
 ## The minimum rotation degrees the dial can be at.
-@export_range(-180.0, 180.0, 0.1, "degrees") var minimum_degrees := -130.0
+@export_range(-180.0, 180.0, 0.1, "degrees") var minimum_degrees := -130.0:
+	set(value):
+		if not is_inside_tree(): await ready
+		minimum_degrees = clampf(value, -180.0, maximum_degrees)
 ## The maxiumum rotation degrees the dial can be at.
-@export_range(-180.0, 180.0, 0.1, "degrees") var maximum_degrees := 130.0
+@export_range(-180.0, 180.0, 0.1, "degrees") var maximum_degrees := 130.0:
+	set(value):
+		if not is_inside_tree(): await ready
+		maximum_degrees = clampf(value, minimum_degrees, 180.0) 
 
 @onready var _dial: Sprite2D = %Dial
 
