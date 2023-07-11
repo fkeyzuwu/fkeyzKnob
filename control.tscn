@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://btm25ao2dnl32"]
+
+[ext_resource type="PackedScene" uid="uid://4axunld1eoys" path="res://addons/fkeyz_knob/knob.tscn" id="1_sc55d"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Knob" parent="HBoxContainer" instance=ExtResource("1_sc55d")]
+layout_mode = 2
+
+[node name="Knob2" parent="HBoxContainer" instance=ExtResource("1_sc55d")]
+layout_mode = 2
+
+[node name="Knob3" parent="HBoxContainer" instance=ExtResource("1_sc55d")]
+layout_mode = 2
+
+[node name="Knob4" parent="HBoxContainer" instance=ExtResource("1_sc55d")]
+layout_mode = 2
+
+[node name="Knob5" parent="HBoxContainer" instance=ExtResource("1_sc55d")]
+layout_mode = 2
+
+[node name="Knob6" parent="HBoxContainer" instance=ExtResource("1_sc55d")]
+layout_mode = 2
+
+[node name="Knob7" parent="HBoxContainer" instance=ExtResource("1_sc55d")]
+layout_mode = 2

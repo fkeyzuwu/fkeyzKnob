@@ -1,4 +1,4 @@
-class_name Knob extends Sprite2D
+class_name Knob extends Control
 
 @export_range(0.1, 2.0, 0.1) var dial_sensitivity := 1.0
 @export_range(-180.0, 180.0, 0.1, "degrees") var start_degrees := -130.0
