@@ -31,6 +31,9 @@ var _dragging := false
 var _mouse_position_start: Vector2
 var _rotation_degrees_start: float
 
+## Emitted whenever the dial is rotated, passing in the degrees it is currently set at.
+signal dial_rotated(degrees: float)
+
 func _ready() -> void: _dial.rotation_degrees = start_degrees
 
 func _input(event: InputEvent) -> void:
@@ -55,3 +58,4 @@ func _physics_process(delta: float) -> void:
 		var relative_rotation = (_rotation_degrees_start - distance)
 		var clamped_rotation = clampf(relative_rotation, minimum_degrees, maximum_degrees)
 		_dial.rotation_degrees = clamped_rotation
+		dial_rotated.emit(_dial.rotation_degrees)

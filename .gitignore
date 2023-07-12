@@ -2,3 +2,4 @@
 .godot/
 project.godot
 test_scene.tscn
+test.gd
