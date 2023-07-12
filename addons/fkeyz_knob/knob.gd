@@ -25,7 +25,7 @@ class_name Knob extends Control
 		if not is_inside_tree(): await ready
 		maximum_degrees = clampf(value, minimum_degrees, 180.0) 
 
-@onready var _dial: Sprite2D = %Dial
+@onready var _dial: TextureRect = %Dial
 
 var _dragging := false
 var _mouse_position_start: Vector2
