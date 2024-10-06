@@ -1,4 +1,4 @@
-## A simple knob UI node that lets you rotate a knob by dragging it up and down.
+## A simple knob UI node that lets you rotate a knob by dragging it up and down, or by scrolling the mouse while while hoving the cursor over it.
 ##
 ## In order to use this script, please use knob.tscn. Using the knob.gd script alone will not work.[br][br]
 ## In case you want to change the knobs' default art, go inside the knob.tscn and change the sprites of the [code]Sprite2D[/code] nodes.
@@ -24,6 +24,8 @@ class_name Knob extends Control
 	set(value):
 		if not is_inside_tree(): await ready
 		maximum_degrees = clampf(value, minimum_degrees, 180.0) 
+## The change in degrees per mouse wheel event. Negative values will make it work in reverse. Can be set to zero to prevent the effect.
+@export var wheel_increment := 10
 
 @onready var _dial: Sprite2D = %Dial
 
@@ -31,8 +33,8 @@ var _dragging := false
 var _mouse_position_start: Vector2
 var _rotation_degrees_start: float
 
-## Emitted whenever the dial is rotated, passing in the degrees it is currently set at.
-signal dial_rotated(degrees: float)
+## Emitted whenever the dial is rotated, passing in the degrees it is currently set at, as well as a value from 0 to 1 representing the current degrees compared to the minimum and maximum degrees.
+signal dial_rotated(degrees: float, value: float)
 
 func _ready() -> void: _dial.rotation_degrees = start_degrees
 
@@ -47,6 +49,17 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 			_dragging = true
 			_mouse_position_start = Vector2(0, event.position.y)
 			_rotation_degrees_start = _dial.rotation_degrees
+	elif event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_released():
+			var relative_rotation = _dial.rotation_degrees + wheel_increment
+			var clamped_rotation = clampf(relative_rotation, minimum_degrees, maximum_degrees)
+			_dial.rotation_degrees = clamped_rotation
+			dial_rotated.emit(_dial.rotation_degrees, _calculate_value(_dial.rotation_degrees))
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.is_released():
+			var relative_rotation = _dial.rotation_degrees - wheel_increment
+			var clamped_rotation = clampf(relative_rotation, minimum_degrees, maximum_degrees)
+			_dial.rotation_degrees = clamped_rotation
+			dial_rotated.emit(_dial.rotation_degrees, _calculate_value(_dial.rotation_degrees))
 
 func _physics_process(delta: float) -> void:
 	if _dragging:
@@ -58,4 +71,9 @@ func _physics_process(delta: float) -> void:
 		var relative_rotation = (_rotation_degrees_start - distance)
 		var clamped_rotation = clampf(relative_rotation, minimum_degrees, maximum_degrees)
 		_dial.rotation_degrees = clamped_rotation
-		dial_rotated.emit(_dial.rotation_degrees)
+		dial_rotated.emit(_dial.rotation_degrees, _calculate_value(_dial.rotation_degrees))
+
+func _calculate_value(degree: float):
+	var adjustedAngle = degree - minimum_degrees
+	var value:float = adjustedAngle / (maximum_degrees - minimum_degrees)
+	return value
