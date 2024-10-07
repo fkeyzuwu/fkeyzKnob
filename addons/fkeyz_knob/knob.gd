@@ -39,18 +39,17 @@ signal dial_rotated(degrees: float, value: float)
 func _ready() -> void: _dial.rotation_degrees = start_degrees
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == 1:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if !event.pressed:
 			_dragging = false
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event is InputEventMouseButton and event.button_index == 1:
-		if event.pressed:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_dragging = true
 			_mouse_position_start = Vector2(0, event.position.y)
 			_rotation_degrees_start = _dial.rotation_degrees
-	elif event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_released():
+		elif event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_released():
 			var relative_rotation = _dial.rotation_degrees + wheel_increment
 			var clamped_rotation = clampf(relative_rotation, minimum_degrees, maximum_degrees)
 			_dial.rotation_degrees = clamped_rotation
@@ -75,5 +74,5 @@ func _physics_process(delta: float) -> void:
 
 func _calculate_value(degree: float):
 	var adjustedAngle = degree - minimum_degrees
-	var value:float = adjustedAngle / (maximum_degrees - minimum_degrees)
+	var value: float = adjustedAngle / (maximum_degrees - minimum_degrees)
 	return value
