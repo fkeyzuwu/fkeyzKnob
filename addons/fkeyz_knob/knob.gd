@@ -25,7 +25,7 @@ class_name Knob extends Control
 		if not is_inside_tree(): await ready
 		maximum_degrees = clampf(value, minimum_degrees, 180.0) 
 ## The change in degrees per mouse wheel event. Negative values will make it work in reverse. Can be set to zero to prevent the effect.
-@export var wheel_increment := 10
+@export_range(-360, 360, 0.1, "degrees") var wheel_increment := 10
 
 @onready var _dial: Sprite2D = %Dial
 
