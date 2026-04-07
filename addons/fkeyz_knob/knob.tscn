@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://4axunld1eoys"]
 
 [ext_resource type="Texture2D" uid="uid://cvmnumms0khv1" path="res://addons/fkeyz_knob/sprites/base.png" id="1_d3jd3"]
-[ext_resource type="Script" path="res://addons/fkeyz_knob/knob.gd" id="1_uoort"]
+[ext_resource type="Script" uid="uid://ck8vle7qh7w01" path="res://addons/fkeyz_knob/knob.gd" id="1_uoort"]
 [ext_resource type="Texture2D" uid="uid://byer1nwtvjpyh" path="res://addons/fkeyz_knob/sprites/dial.png" id="3_57jlc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hjndl"]
@@ -27,7 +27,7 @@ offset = Vector2(16, 16)
 unique_name_in_owner = true
 texture_filter = 1
 position = Vector2(80, 80)
-rotation = -2.26893
+rotation = -2.268928
 scale = Vector2(5, 5)
 texture = ExtResource("3_57jlc")
 offset = Vector2(9.53674e-07, 9.53674e-07)

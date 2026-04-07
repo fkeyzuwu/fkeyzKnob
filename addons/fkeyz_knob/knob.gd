@@ -24,13 +24,14 @@ class_name Knob extends Control
 @export_range(-180.0, 180.0, 0.1, "degrees") var maximum_degrees := 130.0:
 	set(value):
 		if not is_inside_tree(): await ready
-		maximum_degrees = clampf(value, minimum_degrees, 180.0) 
+		maximum_degrees = clampf(value, minimum_degrees, 180.0)
 ## The change in degrees per mouse wheel event. Negative values will make it work in reverse. Can be set to zero to prevent the effect.
 @export_range(-360, 360, 0.1, "degrees") var wheel_increment := 10
 
 @onready var _dial: Sprite2D = %Dial
 
 var _dragging := false
+var _last_mouse_angle := 0.0
 var _mouse_position_start: Vector2
 var _rotation_degrees_start: float
 
@@ -50,6 +51,11 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 			_dragging = true
 			_mouse_position_start = Vector2(0, event.position.y)
 			_rotation_degrees_start = _dial.rotation_degrees
+
+			var center = get_global_rect().get_center()
+			var dir = event.global_position - center
+			_last_mouse_angle = atan2(dir.y, dir.x)
+
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_released():
 			var relative_rotation = _dial.rotation_degrees + wheel_increment
 			var clamped_rotation = clampf(relative_rotation, minimum_degrees, maximum_degrees)
@@ -62,16 +68,28 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 			dial_rotated.emit(_dial.rotation_degrees, _calculate_value(_dial.rotation_degrees))
 
 func _physics_process(delta: float) -> void:
-	if _dragging:
-		var mouse_position = Vector2(0, get_global_mouse_position().y)
-		var distance := _mouse_position_start.distance_to(mouse_position) * dial_sensitivity
-		if _mouse_position_start.y > mouse_position.y:
-			distance = -distance
-			
-		var relative_rotation = (_rotation_degrees_start - distance)
-		var clamped_rotation = clampf(relative_rotation, minimum_degrees, maximum_degrees)
-		_dial.rotation_degrees = clamped_rotation
-		dial_rotated.emit(_dial.rotation_degrees, _calculate_value(_dial.rotation_degrees))
+	if not _dragging:
+		return
+
+	var center = get_global_rect().get_center()
+	var mouse_dir = get_global_mouse_position() - center
+	var current_angle = atan2(mouse_dir.y, mouse_dir.x)
+
+	var angle_delta = rad_to_deg(current_angle - _last_mouse_angle)
+
+	# Prevent sudden jumps when crossing -PI / PI
+	if angle_delta > 180.0:
+		angle_delta -= 360.0
+	elif angle_delta < -180.0:
+		angle_delta += 360.0
+
+	_last_mouse_angle = current_angle
+
+	var relative_rotation = _dial.rotation_degrees + angle_delta * dial_sensitivity
+	var clamped_rotation = clampf(relative_rotation, minimum_degrees, maximum_degrees)
+
+	_dial.rotation_degrees = clamped_rotation
+	dial_rotated.emit(_dial.rotation_degrees, _calculate_value(_dial.rotation_degrees))
 
 func _calculate_value(degree: float):
 	var adjustedAngle = degree - minimum_degrees

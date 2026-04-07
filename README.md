@@ -1,3 +1,3 @@
 # fkeyzKnob
 
-A simple UI Knob for Godot 4.1.
+A simple UI Knob for Godot 4.6.
